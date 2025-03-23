@@ -1,0 +1,34 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+    container_name: server
+    ports:
+      - '8080:8080'
+    environment:
+      PORT: ${PORT:-8080}
+      MONGO_URI: ${MONGO_URI:?MONGO_URI not specified}
+      FRONTEND_URL: ${FRONTEND_URL:?FRONTEND_URL not specified}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET not specified}
+    depends_on:
+      - mongo
+    networks:
+      - backend-network
+    restart: always
+
+  mongo:
+    image: mongo
+    container_name: mongo-db
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - backend-network
+    restart: always
+
+volumes:
+  mongo-data:
+
+networks:
+  backend-network:
+    driver: bridge

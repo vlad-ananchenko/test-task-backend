@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      target: development
+    command: npm run dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+    ports:
+      - '8080:8080'
+    restart: unless-stopped
+
+  mongo:
+    ports:
+      - '27017:27017'
+    restart: unless-stopped
